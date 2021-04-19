@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'controller/css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'controller/css/stylesheet.css' %}">
+    </head>
+
+    <body>
+        {% block content %}
+
+        {% endblock %}
+        <script src="{% static 'controller/js/jquery-3.6.0.js' %}"></script>
+        <script src="{% static 'controller/js/popper.min.js' %}"></script>
+        <script src="{% static 'controller/js/bootstrap.js' %}"></script>
+    </body>
+</html>
+
