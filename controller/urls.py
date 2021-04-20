@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+from .views import async_view, sync_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.controller)
+    path('', views.controller),
+    path("async/", async_view)
 
 ]

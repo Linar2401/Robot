@@ -9,12 +9,16 @@
     </head>
 
     <body>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="#">Robot control</a>
+        </nav>
         {% block content %}
 
         {% endblock %}
         <script src="{% static 'controller/js/jquery-3.6.0.js' %}"></script>
         <script src="{% static 'controller/js/popper.min.js' %}"></script>
         <script src="{% static 'controller/js/bootstrap.js' %}"></script>
+        <script src="{% static 'controller/js/ajax.js' %}"></script>
     </body>
 </html>
 
