@@ -10,8 +10,8 @@ import asyncio
 
 from rest_framework.response import Response
 
-from controller.models import RobotStatus
-from controller.serializers import StatusSerializer
+from controller.models import *
+from controller.serializers import *
 
 
 def controller(request):
@@ -27,3 +27,11 @@ class StatusView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+class PositionView(viewsets.ModelViewSet):
+    queryset = Position.objects.all()
+    serializer_class = PositionSerializer
+
+
+class PackageView(viewsets.ModelViewSet):
+    queryset = Package.objects.all()
+    serializer_class = PackageSerializer

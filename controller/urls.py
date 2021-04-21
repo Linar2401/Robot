@@ -20,10 +20,12 @@ from rest_framework.routers import DefaultRouter
 from . import views
 from django.urls import path, re_path, include
 
-from .views import StatusView
+from .views import *
 
 router = DefaultRouter()
 router.register(r'status', StatusView, basename='user')
+router.register(r'position', PositionView, basename='user')
+router.register(r'package', PackageView, basename='user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

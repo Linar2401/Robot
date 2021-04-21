@@ -5,3 +5,5 @@ from django.contrib import admin
 from controller.models import *
 
 admin.site.register(RobotStatus)
+admin.site.register(Package)
+admin.site.register(Position)
