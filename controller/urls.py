@@ -15,12 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework.routers import DefaultRouter
+
 from . import views
-from .views import async_view, sync_view
+from django.urls import path, re_path, include
+
+from .views import StatusView
+
+router = DefaultRouter()
+router.register(r'status', StatusView, basename='user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.controller),
-    path("async/", async_view)
-
+    path('rest/', include('rest_framework.urls', namespace='rest_framework'))
 ]
+urlpatterns += router.urls

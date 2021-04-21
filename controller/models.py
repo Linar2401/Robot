@@ -38,14 +38,19 @@ class Package(models.Model):
 
 
 class RobotStatus(models.Model):
-    AWAIT = 'A'
+    AWAIT_PACKAGE = 'A'
     MOVING = "M"
     IN_STOCK = 'IS'
+    ON_BASE = "OB"
     STATUS_CHOICES = (
-        (AWAIT, 'Await package'),
+        (AWAIT_PACKAGE, 'Await package'),
         (MOVING, 'Moving'),
         (IN_STOCK, 'In stock'),
+        (ON_BASE, 'On base')
     )
 
     time = models.DateTimeField(default=datetime.datetime.now())
-    status = models.CharField(max_length=4, choices=STATUS_CHOICES, default=AWAIT)
+    status = models.CharField(max_length=4, choices=STATUS_CHOICES, default=AWAIT_PACKAGE)
+
+    def __str__(self):
+        return str(self.status)
