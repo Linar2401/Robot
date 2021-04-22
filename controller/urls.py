@@ -29,7 +29,7 @@ router.register(r'package', PackageView, basename='user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.controller),
+    path('', views.Controller.as_view()),
     path('rest/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 urlpatterns += router.urls

@@ -29,6 +29,23 @@ class Position(models.Model):
     status = models.CharField(max_length=4, choices=STATUS_CHOICES, default=OPEN)
     time_info_updated = models.DateTimeField(default=datetime.datetime.now())
 
+    def get_time_diff(self):
+        naive = self.time_info_updated.replace(tzinfo=None)
+        current = datetime.datetime.now()
+        current.replace(tzinfo=None)
+        dif = current - naive
+        # return str(dif.seconds)
+        if dif.days > 0:
+            return "More than 24 hours ago"
+        elif int(dif.seconds/3600) > 2:
+            return "A few hours ago"
+        elif int(dif.seconds/3600) > 0:
+            return "More than hour ago"
+        elif dif.seconds > 60:
+            return str(int(dif.seconds/60)) + " minutes ago"
+        else:
+            return "Less than a minute ago"
+
     def __str__(self):
         return self.position_number
 
@@ -38,11 +55,13 @@ class Package(models.Model):
     TRANSIT = "T"
     IN_STOCK = 'IS'
     ON_ISSUE = 'OS'
+    GONE = "G"
     STATUS_CHOICES = (
         (OPEN, 'Open'),
         (TRANSIT, 'In transit'),
         (IN_STOCK, 'In stock'),
         (ON_ISSUE, 'On issue'),
+        (GONE, 'Is gone'),
     )
 
     name = models.CharField(max_length=50, default='Package')

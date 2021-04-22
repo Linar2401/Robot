@@ -3,6 +3,7 @@ from django.shortcuts import render
 import asyncio
 from time import sleep
 from rest_framework import viewsets
+from django.views.generic import *
 from django.http import HttpResponse
 
 # Create your views here.
@@ -14,8 +15,17 @@ from controller.models import *
 from controller.serializers import *
 
 
-def controller(request):
-    return render(request, 'main.html')
+class Controller(TemplateView):
+    template_name = "main.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['positions'] = Position.objects.all()
+        times = {}
+        for pos in Position.objects.all():
+            times[pos.id] = pos.get_time_diff()
+        context['times'] = times
+        return context
 
 
 class StatusView(viewsets.ModelViewSet):
