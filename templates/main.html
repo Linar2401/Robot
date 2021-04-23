@@ -11,7 +11,7 @@
         <div class="row mt-5">
             <div class="col-12">
                 <div class="card p-2">
-                    <img src="..." class="card-img-top" alt="...">
+
                     <div class="card-body">
                         <button type="button" class="btn btn-warning" id="btn-update">Update</button>
                         <h5 class="card-title">Positions:</h5>
@@ -21,12 +21,14 @@
                                     <div class="col-3">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h5 class="card-title" id="title-{{ forloop.counter }}">{{ pos.position_number }} | <img src="{% if pos.status == "L" %}
-                                                        {% static "controller/img/red.png" %}
+                                                <h5 class="card-title"
+                                                    id="title-{{ forloop.counter }}">{{ pos.position_number }} | <img
+                                                        src="{% if pos.status == "L" %}
+                                                        {% static "controller/img/orange.png" %}
                                                     {% elif pos.status == "OP" %}
                                                         {% static "controller/img/green.png" %}
                                                     {% else %}
-                                                        {% static "controller/img/orange.png" %}
+                                                        {% static "controller/img/red.png" %}
                                                     {% endif %}" width="32px" , height="32px">
                                                 </h5>
                                                 <p class="card-text" id="status-{{ forloop.counter }}">Status:
@@ -44,18 +46,23 @@
                                                         {% endif %}
                                                     {% endfor %}
                                                 </p>
-                                                <p class="card-text" id="p-{{ forloop.counter }}">Package:
-                                                    {% for key,value in packages.items %}
-                                                        {% if key == pos.id %}
-                                                            {% if value != None %}
-                                                                <a href="{% url 'package_by_pos' pos.id %}">{{ value.name }}</a>
-                                                            {% else %}
-                                                                Nothing
-                                                            {% endif %}
-                                                        {% endif %}
-                                                    {% endfor %}
+                                                <p class="card-text">Package:
+
                                                 </p>
-                                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                                <span id="package-{{ forloop.counter }}">
+                                                {% for key,value in packages.items %}
+                                                    {% if key == pos.id %}
+                                                        {% if value != None and pos.status == "OC" and value.status == "IS" %}
+                                                            <a href="{% url 'package_by_pos' pos.id %}">Link</a>
+                                                        {% else %}
+                                                            None
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                </span>
+                                                <br>
+                                                <br>
+                                                <a href="{% url 'package_by_pos_rest' 1 %}" class="btn btn-primary">Go somewhere</a>
                                             </div>
                                         </div>
                                     </div>

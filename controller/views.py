@@ -48,6 +48,7 @@ class PackageView(TemplateView):
         context['package'] = get_object_or_404(Package, position=self.kwargs.get('pos_id'))
         return context
 
+
 class PositionView(viewsets.ModelViewSet):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
@@ -56,3 +57,14 @@ class PositionView(viewsets.ModelViewSet):
 class PackageViewJSON(viewsets.ModelViewSet):
     queryset = Package.objects.all()
     serializer_class = PackageSerializer
+
+
+class PackageByPosView(viewsets.ModelViewSet):
+    queryset = Package.objects.all()
+    serializer_class = PackageSerializer
+
+    def list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(
+            Package.objects.filter(position=self.kwargs.get('pos_id')).filter(status='IS').first(),
+            many=False)
+        return Response(serializer.data)

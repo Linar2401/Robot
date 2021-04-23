@@ -2,9 +2,12 @@ $(document).ready(function () {
     $('#btn-update').click(function () {
         $.get("http://127.0.0.1:8000/position", function (data) {
             let positions = data.results
+            var packages = {}
             let html_titles = []
             let html_status = []
             let html_time = []
+            let html_package= []
+
             for (let i = 1; i < 5; i++) {
                 html_titles.push($("#title-" + i))
             }
@@ -14,13 +17,26 @@ $(document).ready(function () {
             for (let i = 1; i < 5; i++) {
                 html_time.push($("#tu-" + i))
             }
+            for (let i = 1; i < 5; i++) {
+                html_package.push($("#package-" + i))
+            }
             for (let i = 0; i < 4; i++) {
+                request = $.get("http://127.0.0.1:8000/rest/package/pos/" + positions[i].id)
+                request.done(function (message) {
+                    packages[message.position] = true
+                    console.log(true)
+                })
+                request.fail(function (message) {
+                    packages[message.position] = false
+                    console.log(false)
+                })
+
                 let code = "<img src='http://127.0.0.1:8000/static/controller/img/red.png' width='32px' height='32px'>"
                 let status = "Open"
                 let tu = "A less than minute"
                 switch (positions[i].status) {
                     case 'L':
-                        code = "<img src='http://127.0.0.1:8000/static/controller/img/red.png' width='32px' height='32px'>"
+                        code = "<img src='http://127.0.0.1:8000/static/controller/img/orange.png' width='32px' height='32px'>"
                         status = "Status: On load"
                         break
                     case 'OP':
@@ -28,11 +44,11 @@ $(document).ready(function () {
                         status = "Status: Open"
                         break
                     case 'OC':
-                        code = "<img src='http://127.0.0.1:8000/static/controller/img/orange.png' width='32px' height='32px'>"
+                        code = "<img src='http://127.0.0.1:8000/static/controller/img/red.png' width='32px' height='32px'>"
                         status = "Status: Occupied"
                         break
                     default:
-                        code = "<img src='http://127.0.0.1:8000/static/controller/img/orange.png' width='32px' height='32px'>"
+                        code = "<img src='http://127.0.0.1:8000/static/controller/img/red.png' width='32px' height='32px'>"
                         break
                 }
                 html_titles[i].html(positions[i].position_number + " | " +
@@ -61,6 +77,10 @@ $(document).ready(function () {
                     }
                 }
                 html_time[i].text(tu)
+                let str = "<a href='http://127.0.0.1:8000/package/pos/" + positions[i].id + "'>Link</a>"
+                if (packages[i] == true){
+                    html_package[i].html(str)
+                }
             }
         }, "json");
     })
