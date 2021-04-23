@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Package Detail
+{% endblock %}
+
+{% block content %}
+    <div class="container p-5">
+        <div class="row mt-5">
+            <div class="col-12">
+                <a class="btn btn-primary" href="{% url 'main' %}" role="button">Back to control panel</a>
+                <p>Name: {{ package.name }}</p>
+                <hr>
+                <p>Status: {{ package.status }}</p>
+                <hr>
+                <p>Time arrived: {{ package.time_arrived }}</p>
+                <hr>
+                <p>Time of departure: {{ package.time_of_departure }}</p>
+                <hr>
+                <p>Additional info: {{ package.additional_info }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

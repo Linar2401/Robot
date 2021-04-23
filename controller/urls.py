@@ -25,11 +25,12 @@ from .views import *
 router = DefaultRouter()
 router.register(r'status', StatusView, basename='user')
 router.register(r'position', PositionView, basename='user')
-router.register(r'package', PackageView, basename='user')
+router.register(r'package', PackageViewJSON, basename='user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.Controller.as_view()),
-    path('rest/', include('rest_framework.urls', namespace='rest_framework'))
+    path('', views.Controller.as_view(), name='main'),
+    path('package/pos/<int:pos_id>', views.PackageView.as_view(), name='package_by_pos'),
+    # path('rest/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 urlpatterns += router.urls

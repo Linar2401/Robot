@@ -12,11 +12,11 @@ class Position(models.Model):
         (LOAD, 'On load'),
         (OCCUPIED, 'Occupied'),
     )
-    P1 = 'P1'
-    P2 = "P2"
-    P3 = 'P3'
-    P4 = 'P4'
-    P5 = 'P5'
+    P1 = '1'
+    P2 = "2"
+    P3 = '3'
+    P4 = '4'
+    P5 = '5'
     POSITION_CHOICES = (
         (P1, 'Position #1'),
         (P2, 'Position #2'),
@@ -46,6 +46,9 @@ class Position(models.Model):
         else:
             return "Less than a minute ago"
 
+    def get_package(self):
+        return self.package_set.order_by('-time_arrived').filter(position=self).first()
+
     def __str__(self):
         return self.position_number
 
@@ -68,7 +71,7 @@ class Package(models.Model):
     status = models.CharField(max_length=4, choices=STATUS_CHOICES, default=OPEN)
     position = models.ForeignKey(Position, on_delete=models.CASCADE, null=True)
     time_arrived = models.DateTimeField(default=datetime.datetime.now())
-    time_of_departure = models.DateTimeField(default=datetime.datetime.now(), blank=True)
+    time_of_departure = models.DateTimeField(default=datetime.datetime.now(), blank=True, null=True)
     additional_info = models.TextField(blank=True, max_length=1000)
 
     def __str__(self):

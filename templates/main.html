@@ -13,6 +13,7 @@
                 <div class="card p-2">
                     <img src="..." class="card-img-top" alt="...">
                     <div class="card-body">
+                        <button type="button" class="btn btn-warning" id="btn-update">Update</button>
                         <h5 class="card-title">Positions:</h5>
                         <div class="container">
                             <div class="row justify-content-around">
@@ -20,31 +21,39 @@
                                     <div class="col-3">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h5 class="card-title">{{ pos.position_number }} | <img src="{% if pos.status == "L" %}
+                                                <h5 class="card-title" id="title-{{ forloop.counter }}">{{ pos.position_number }} | <img src="{% if pos.status == "L" %}
                                                         {% static "controller/img/red.png" %}
                                                     {% elif pos.status == "OP" %}
                                                         {% static "controller/img/green.png" %}
                                                     {% else %}
                                                         {% static "controller/img/orange.png" %}
                                                     {% endif %}" width="32px" , height="32px">
-                                                <p class="card-text"></h5>
-                                                <p class="card-text">Status:
+                                                </h5>
+                                                <p class="card-text" id="status-{{ forloop.counter }}">Status:
                                                     {% if pos.status == "L" %}
-                                                        Locked
+                                                        On load
                                                     {% elif pos.status == "OP" %}
                                                         Open
                                                     {% else %}
-                                                        On load
+                                                        Occupied
                                                     {% endif %}</p>
-                                                <p class="card-text">Last time updated:
+                                                <p class="card-text" id="tu-{{ forloop.counter }}">Last time updated:
                                                     {% for key,value in times.items %}
                                                         {% if key == pos.id %}
                                                             {{ value }}
                                                         {% endif %}
                                                     {% endfor %}
                                                 </p>
-                                                <p class="card-text">Package:
-
+                                                <p class="card-text" id="p-{{ forloop.counter }}">Package:
+                                                    {% for key,value in packages.items %}
+                                                        {% if key == pos.id %}
+                                                            {% if value != None %}
+                                                                <a href="{% url 'package_by_pos' pos.id %}">{{ value.name }}</a>
+                                                            {% else %}
+                                                                Nothing
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
                                                 </p>
                                                     <a href="#" class="btn btn-primary">Go somewhere</a>
                                             </div>

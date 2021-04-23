@@ -6,7 +6,7 @@ from controller.models import RobotStatus, Position, Package
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = RobotStatus
-        fields = ("status", "time")
+        fields = ("id", "status", "time")
 
         extra_kwargs = {
             'status': {'read_only': True},
@@ -17,10 +17,10 @@ class StatusSerializer(serializers.ModelSerializer):
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Position
-        fields = ("name", "position_number", "status", "time_info_updated")
+        fields = ("id", "name", "position_number", "status", "time_info_updated")
 
 
 class PackageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Package
-        fields = ("name", "status", "position", "time_arrived", "time_of_departure", "additional_info")
+        fields = ("id", "name", "status", "position", "time_arrived", "time_of_departure", "additional_info")

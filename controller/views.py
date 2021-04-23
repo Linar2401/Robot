@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 import asyncio
 from time import sleep
 from rest_framework import viewsets
@@ -22,9 +22,12 @@ class Controller(TemplateView):
         context = super().get_context_data(**kwargs)
         context['positions'] = Position.objects.all()
         times = {}
+        packages = {}
         for pos in Position.objects.all():
             times[pos.id] = pos.get_time_diff()
+            packages[pos.id] = pos.get_package()
         context['times'] = times
+        context['packages'] = packages
         return context
 
 
@@ -37,11 +40,19 @@ class StatusView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+class PackageView(TemplateView):
+    template_name = "package_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['package'] = get_object_or_404(Package, position=self.kwargs.get('pos_id'))
+        return context
+
 class PositionView(viewsets.ModelViewSet):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
 
 
-class PackageView(viewsets.ModelViewSet):
+class PackageViewJSON(viewsets.ModelViewSet):
     queryset = Package.objects.all()
     serializer_class = PackageSerializer
