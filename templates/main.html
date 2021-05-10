@@ -11,9 +11,8 @@
         <div class="row mt-5">
             <div class="col-12">
                 <div class="card p-2">
-
                     <div class="card-body">
-                        <button type="button" class="btn btn-warning" id="btn-update">Update</button>
+{#                        <button type="button" class="btn btn-warning disabled" id="btn-update">Update</button>#}
                         <h5 class="card-title">Positions:</h5>
                         <div class="container">
                             <div class="row justify-content-around">
@@ -46,29 +45,34 @@
                                                         {% endif %}
                                                     {% endfor %}
                                                 </p>
-                                                <p class="card-text">Package:
-
-                                                </p>
-                                                <span id="package-{{ forloop.counter }}">
-                                                {% for key,value in packages.items %}
-                                                    {% if key == pos.id %}
-                                                        {% if value != None and pos.status == "OC" and value.status == "IS" %}
-                                                            <a href="{% url 'package_by_pos' pos.id %}">Link</a>
-                                                        {% else %}
-                                                            None
+                                                <p class="card-text" id="package-{{ forloop.counter }}">Package:
+                                                    {% for key,value in packages.items %}
+                                                        {% if key == pos.id %}
+                                                            {% if value != None and pos.status == "OC" or value.status == "IS" %}
+                                                                <a href="{% url 'package_by_pos' pos.id %}"
+                                                                   class="btn btn-primary">See Package</a>
+                                                            {% else %}
+                                                                <a href="{% url 'package_by_pos' pos.id %}"
+                                                                   class="btn btn-primary disabled">See Package</a>
+                                                            {% endif %}
                                                         {% endif %}
-                                                    {% endif %}
-                                                {% endfor %}
-                                                </span>
+                                                    {% endfor %}
+                                                </p>
                                                 <br>
                                                 <br>
-                                                <a href="{% url 'package_by_pos_rest' 1 %}" class="btn btn-primary">Go somewhere</a>
                                             </div>
                                         </div>
                                     </div>
                                 {% endfor %}
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="card p-2 mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Robot Status:</h5>
+                        <h5 id="robot-status-name">Current state: {{ status.get_verbose_status }}</h5>
+                        <h5 id="robot-status-time">Time: {{ status.get_time_diff }}</h5>
                     </div>
                 </div>
             </div>

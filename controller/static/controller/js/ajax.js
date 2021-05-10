@@ -1,12 +1,15 @@
 $(document).ready(function () {
-    $('#btn-update').click(function () {
+    // $('#btn-update').click()
+    let interval = setInterval(function () {
         $.get("http://127.0.0.1:8000/position", function (data) {
             let positions = data.results
-            var packages = {}
+            let packages = {}
             let html_titles = []
             let html_status = []
             let html_time = []
             let html_package= []
+            let html_robot_status = $('#robot-status-name')
+            let html_robot_status_time = $('#robot-status-time')
 
             for (let i = 1; i < 5; i++) {
                 html_titles.push($("#title-" + i))
@@ -22,13 +25,28 @@ $(document).ready(function () {
             }
             for (let i = 0; i < 4; i++) {
                 request = $.get("http://127.0.0.1:8000/rest/package/pos/" + positions[i].id)
+
+                let str
                 request.done(function (message) {
-                    packages[message.position] = true
-                    console.log(true)
-                })
-                request.fail(function (message) {
-                    packages[message.position] = false
-                    console.log(false)
+                    if(message.count > 0){
+                        // packages[message.position] = true
+                        // console.log("Position " + positions[i].id + ". Count:" + message.count)
+                         str = "Package:\n" +
+                        "                                                    \n" +
+                        "                                                    \n" +
+                        "                                                        \n" +
+                        "                                                            <a href='http://127.0.0.1:8000/package/pos/" + positions[i].id + "' class=\"btn btn-primary\">See Package</a>"
+                    }
+                    else {
+                        // console.log("Position " + positions[i].id + ". Count:" + message.count)
+                        // packages[message.position] = false
+                         str = "Package:\n" +
+                        "                                                    \n" +
+                        "                                                    \n" +
+                        "                                                        \n" +
+                        "                                                            <a href='http://127.0.0.1:8000/package/pos/" + positions[i].id + "' class=\"btn btn-primary disabled\">See Package</a>"
+                    }
+                    html_package[i].html(str)
                 })
 
                 let code = "<img src='http://127.0.0.1:8000/static/controller/img/red.png' width='32px' height='32px'>"
@@ -76,12 +94,55 @@ $(document).ready(function () {
                         }
                     }
                 }
+
                 html_time[i].text(tu)
-                let str = "<a href='http://127.0.0.1:8000/package/pos/" + positions[i].id + "'>Link</a>"
-                if (packages[i] == true){
-                    html_package[i].html(str)
-                }
             }
+            let r_status_request = $.get("http://127.0.0.1:8000/status")
+            r_status_request.done(function (data){
+                let status
+                switch (data.status) {
+                    case 'IS':
+                        status = "Status: In stock"
+                        break
+                    case 'OB':
+                        status = "Status: On base"
+                        break
+                    case 'M':
+                        status = "Status: Moving"
+                        break
+                    case 'A':
+                        status = "Status: Await package"
+                        break
+                    default:
+                        status = "Status: Error"
+                        break
+                }
+                html_robot_status.text(status)
+                let time = (Date.now() - new Date(data.time))/1000
+                let time_str
+                if (time < 60){
+                    time_str = "Less than a minute ago"
+                }
+                else {
+                    if(time < 60*60){
+                        time_str = Math.round(time/60) +" minutes ago"
+                    }
+                    else {
+                        if (time < 60*60*3){
+                            time_str = "More than hour ago"
+                        }
+                        else {
+                            if (time < 60*60*24){
+                                 time_str = "A few hours ago"
+                            }
+                            else {
+                                time_str = "More than 24 hours ago"
+                            }
+                        }
+                    }
+                }
+                html_robot_status_time.text("Time: " + time_str)
+            })
         }, "json");
-    })
+    }, 1000)
 })

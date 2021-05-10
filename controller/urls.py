@@ -32,7 +32,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.Controller.as_view(), name='main'),
     path('package/pos/<int:pos_id>', views.PackageView.as_view(), name='package_by_pos'),
-    path('/rest/package/pos/<int:pos_id>', views.PackageByPosView.as_view({'get': 'list'}), name='package_by_pos_rest'),
+    path('rest/package/pos/<int:pos_id>', views.PackageByPosView.as_view({'get': 'list'}), name='package_by_pos_rest'),
     # path('rest/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 urlpatterns += router.urls

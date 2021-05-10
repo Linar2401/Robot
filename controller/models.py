@@ -95,3 +95,29 @@ class RobotStatus(models.Model):
 
     def __str__(self):
         return str(self.status)
+
+    def get_verbose_status(self):
+        for item in self.STATUS_CHOICES:
+            if item[0] == self.status:
+                return item[1]
+        return "Error Status"
+
+
+    def get_time_diff(self):
+        naive = self.time.replace(tzinfo=None)
+        current = datetime.datetime.now()
+        current.replace(tzinfo=None)
+        dif = current - naive
+        # return str(dif.seconds)
+        if dif.days > 0:
+            return "More than 24 hours ago"
+        elif int(dif.seconds/3600) > 2:
+            return "A few hours ago"
+        elif int(dif.seconds/3600) > 0:
+            return "More than hour ago"
+        elif dif.seconds > 60:
+            return str(int(dif.seconds/60)) + " minutes ago"
+        else:
+            return "Less than a minute ago"
+
+

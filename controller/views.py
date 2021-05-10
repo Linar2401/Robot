@@ -28,6 +28,7 @@ class Controller(TemplateView):
             packages[pos.id] = pos.get_package()
         context['times'] = times
         context['packages'] = packages
+        context['status'] = RobotStatus.objects.latest("time")
         return context
 
 
@@ -60,11 +61,14 @@ class PackageViewJSON(viewsets.ModelViewSet):
 
 
 class PackageByPosView(viewsets.ModelViewSet):
-    queryset = Package.objects.all()
     serializer_class = PackageSerializer
 
-    def list(self, request, *args, **kwargs):
-        serializer = self.get_serializer(
-            Package.objects.filter(position=self.kwargs.get('pos_id')).filter(status='IS').first(),
-            many=False)
-        return Response(serializer.data)
+    # def list(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(
+    #         Package.objects.filter(position=self.kwargs.get('pos_id')))
+    #     return Response(serializer.data)
+
+    def get_queryset(self):
+        queryset = Package.objects.filter(position_id=self.kwargs["pos_id"])
+        return queryset
+
