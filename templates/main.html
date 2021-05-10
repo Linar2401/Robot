@@ -12,7 +12,7 @@
             <div class="col-12">
                 <div class="card p-2">
                     <div class="card-body">
-{#                        <button type="button" class="btn btn-warning disabled" id="btn-update">Update</button>#}
+                        {#                        <button type="button" class="btn btn-warning disabled" id="btn-update">Update</button>#}
                         <h5 class="card-title">Positions:</h5>
                         <div class="container">
                             <div class="row justify-content-around">
@@ -73,6 +73,23 @@
                         <h5 class="card-title">Robot Status:</h5>
                         <h5 id="robot-status-name">Current state: {{ status.get_verbose_status }}</h5>
                         <h5 id="robot-status-time">Time: {{ status.get_time_diff }}</h5>
+                    </div>
+                </div>
+                <div class="card p-2 mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Robot Commands:</h5>
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-3">
+                                    <div class="card p-2 mt-4">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Command name</h5>
+                                            <button type="button" class="btn btn-warning">Execute</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

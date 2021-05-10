@@ -102,19 +102,19 @@ $(document).ready(function () {
                 let status
                 switch (data.status) {
                     case 'IS':
-                        status = "Status: In stock"
+                        status = "Current state: In stock"
                         break
                     case 'OB':
-                        status = "Status: On base"
+                        status = "Current state: On base"
                         break
                     case 'M':
-                        status = "Status: Moving"
+                        status = "Current state: Moving"
                         break
                     case 'A':
-                        status = "Status: Await package"
+                        status = "Current state: Await package"
                         break
                     default:
-                        status = "Status: Error"
+                        status = "Current state: Error"
                         break
                 }
                 html_robot_status.text(status)
@@ -129,7 +129,7 @@ $(document).ready(function () {
                     }
                     else {
                         if (time < 60*60*3){
-                            time_str = "More than hour ago"
+                            time_str = "More than hour ago(" + Math.round(time/60) + " minutes)"
                         }
                         else {
                             if (time < 60*60*24){
