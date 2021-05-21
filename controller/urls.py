@@ -18,6 +18,7 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 from . import views
+from . import async_views
 from django.urls import path, re_path, include
 
 from .views import *
@@ -26,10 +27,12 @@ router = DefaultRouter()
 router.register(r'status', StatusView, basename='user')
 router.register(r'position', PositionView, basename='user')
 router.register(r'package', PackageViewJSON, basename='user')
+router.register(r'available_package', AvailablePackageView, basename='user')
 # router.register(r'rest/package/pos/{position_id}', PackageByPosView, basename='package_by_pos')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('command/get_package', async_views.commandGetPackage, name='command.get_package'),
     path('', views.Controller.as_view(), name='main'),
     path('package/pos/<int:pos_id>', views.PackageView.as_view(), name='package_by_pos'),
     path('rest/package/pos/<int:pos_id>', views.PackageByPosView.as_view({'get': 'list'}), name='package_by_pos_rest'),

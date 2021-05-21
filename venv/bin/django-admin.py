@@ -1,4 +1,4 @@
-#!/home/linar/PyCharmProjects/robot/venv/bin/python
+#!/home/linar/PycharmProjects/test/robot/venv/bin/python
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

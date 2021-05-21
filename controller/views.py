@@ -2,12 +2,16 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 import asyncio
 from time import sleep
+
+from django.urls import reverse
 from rest_framework import viewsets
 from django.views.generic import *
 from django.http import HttpResponse
+from django.shortcuts import redirect
 
 # Create your views here.
 import asyncio
+from asgiref.sync import sync_to_async
 
 from rest_framework.response import Response
 
@@ -29,11 +33,13 @@ class Controller(TemplateView):
         context['times'] = times
         context['packages'] = packages
         context['status'] = RobotStatus.objects.latest("time")
+        context['command_get_package_select'] = Package.objects.filter(status='IS')
         return context
 
 
 class StatusView(viewsets.ModelViewSet):
-    queryset = RobotStatus.objects.latest("time")
+    # queryset = RobotStatus.objects.latest("time")
+    queryset = RobotStatus.objects.all()
     serializer_class = StatusSerializer
 
     def list(self, request, *args, **kwargs):
@@ -48,6 +54,14 @@ class PackageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['package'] = get_object_or_404(Package, position=self.kwargs.get('pos_id'))
         return context
+
+
+class AvailablePackageView(viewsets.ModelViewSet):
+    serializer_class = PackageSerializer
+
+    def get_queryset(self):
+        queryset = Package.objects.filter(status='IS')
+        return queryset
 
 
 class PositionView(viewsets.ModelViewSet):
@@ -71,4 +85,9 @@ class PackageByPosView(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Package.objects.filter(position_id=self.kwargs["pos_id"])
         return queryset
+
+
+
+
+
 
